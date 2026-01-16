@@ -108,6 +108,18 @@ export class WidgetRenderer {
         margin: 0;
       }
 
+      /* Empty State */
+      .taboola-widget-empty {
+        padding: 40px 20px;
+        text-align: center;
+        color: #7f8c8d;
+      }
+
+      .taboola-widget-empty__message {
+        margin: 0;
+        font-size: 14px;
+      }
+
       /* Recommendation Item */
       .taboola-recommendation-item {
         display: flex;

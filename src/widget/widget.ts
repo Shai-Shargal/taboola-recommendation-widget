@@ -17,7 +17,6 @@ export interface WidgetConfig extends Partial<ApiConfig> {
   sourceType?: string;
   sourceId?: string;
   sourceUrl?: string;
-  demoMode?: boolean; // If true, injects mock organic items for testing
 }
 
 /**
@@ -37,8 +36,8 @@ export class TaboolaWidget {
       apiKey: 'f9040ab1b9c802857aa783c469d0e0ff7e7366e4',
       count: 4,
       sourceType: 'video',
-      sourceId: 'demo123',
-      sourceUrl: 'https://example.com',
+      sourceId: '214321562187',
+      sourceUrl: 'http://www.site.com/videos/214321562187.html',
       ...config,
     };
 
@@ -76,18 +75,24 @@ export class TaboolaWidget {
       };
 
       const response = await this.apiClient.fetchRecommendations(apiConfig);
+      console.log('API Response received:', response);
+      console.log('Number of items:', response.list.length);
 
-      // In demo mode, inject some organic items for testing
-      let itemsList = [...response.list];
-      if (this.config.demoMode) {
-        itemsList = this.injectDemoOrganicItems(itemsList);
+      // Handle empty response
+      if (!response.list || response.list.length === 0) {
+        console.warn('API returned empty list after retries');
+        this.showEmptyState();
+        this.isLoading = false;
+        return;
       }
 
-      // Create items from response
-      const items = itemsList.map((item) => this.createItem(item));
+      // Use API response directly
+      const items = response.list.map((item) => this.createItem(item));
+      console.log('Created items:', items.length);
 
       // Render items
       this.renderer.render(this.container, items);
+      console.log('Items rendered to DOM');
 
       this.isLoading = false;
     } catch (error) {
@@ -108,22 +113,6 @@ export class TaboolaWidget {
     }
   }
 
-  /**
-   * Injects mock organic items for demo/testing purposes
-   */
-  private injectDemoOrganicItems(sponsoredItems: RecommendationItem[]): RecommendationItem[] {
-    // Take first 2 sponsored items and convert them to organic for demo
-    const organicItems: RecommendationItem[] = sponsoredItems.slice(0, 2).map((item, index) => ({
-      ...item,
-      origin: 'organic' as const,
-      id: `organic-demo-${index}-${item.id}`,
-      // Remove branding for organic items
-      branding: undefined,
-    }));
-
-    // Mix: first 2 organic, then rest sponsored
-    return [...organicItems, ...sponsoredItems.slice(2)];
-  }
 
   /**
    * Shows loading state
@@ -153,6 +142,21 @@ export class TaboolaWidget {
     this.container.innerHTML = `
       <div class="taboola-widget-error">
         <p class="taboola-widget-error__message">${errorMessage}</p>
+      </div>
+    `;
+  }
+
+  /**
+   * Shows empty state when API returns no recommendations
+   */
+  private showEmptyState(): void {
+    if (!this.container) return;
+
+    this.container.innerHTML = `
+      <div class="taboola-widget-empty">
+        <p class="taboola-widget-empty__message">
+          No recommendations available at this time. Please check back later.
+        </p>
       </div>
     `;
   }
