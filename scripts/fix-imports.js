@@ -12,11 +12,9 @@ function fixImports(dir) {
     } else if (file.name.endsWith('.js') && !file.name.endsWith('.map.js')) {
       let content = fs.readFileSync(fullPath, 'utf8');
       
-      // Fix import statements to include .js extension (relative imports)
       content = content.replace(
         /from\s+['"](\.\.?\/[^'"]+)['"]/g,
         (match, importPath) => {
-          // Only add .js if it doesn't already have an extension
           if (!importPath.match(/\.(js|json)$/)) {
             return match.replace(importPath, importPath + '.js');
           }
@@ -24,7 +22,6 @@ function fixImports(dir) {
         }
       );
       
-      // Also fix import() dynamic imports
       content = content.replace(
         /import\s*\(\s*['"](\.\/[^'"]+)['"]\s*\)/g,
         (match, importPath) => {
@@ -41,7 +38,24 @@ function fixImports(dir) {
   }
 }
 
+function copyStyles() {
+  const srcStyles = path.join(__dirname, '..', 'src', 'styles', 'widget.css');
+  const distStylesDir = path.join(__dirname, '..', 'dist', 'styles');
+  const distStyles = path.join(distStylesDir, 'widget.css');
+  
+  if (!fs.existsSync(distStylesDir)) {
+    fs.mkdirSync(distStylesDir, { recursive: true });
+  }
+  
+  if (fs.existsSync(srcStyles)) {
+    fs.copyFileSync(srcStyles, distStyles);
+    console.log('Copied styles to dist/styles/widget.css');
+  }
+}
+
 const distDir = path.join(__dirname, '..', 'dist');
 console.log('Fixing imports in dist folder...');
 fixImports(distDir);
+console.log('Copying styles...');
+copyStyles();
 console.log('Done!');

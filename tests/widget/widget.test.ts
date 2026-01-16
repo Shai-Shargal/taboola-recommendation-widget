@@ -1,9 +1,8 @@
 import { TaboolaWidget, WidgetConfig } from '../../src/widget/widget';
-import { TaboolaApiClient } from '../../src/api/taboola-api';
+import { TaboolaApiClient } from '../../src/api/client';
 import { TaboolaResponse } from '../../src/types/recommendation';
 
-// Mock the API client
-jest.mock('../../src/api/taboola-api');
+jest.mock('../../src/api/client');
 
 describe('TaboolaWidget', () => {
   let container: HTMLElement;

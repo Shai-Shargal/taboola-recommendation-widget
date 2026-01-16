@@ -1,4 +1,5 @@
-import { TaboolaApiClient, TaboolaApiError } from '../../src/api/taboola-api';
+import { TaboolaApiClient } from '../../src/api/client';
+import { TaboolaApiError } from '../../src/api/errors';
 import { ApiConfig, TaboolaResponse } from '../../src/types/recommendation';
 
 // Mock fetch globally
