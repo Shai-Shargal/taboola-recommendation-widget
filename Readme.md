@@ -1,11 +1,12 @@
 # Taboola Recommendation Widget
 
-A fully functional, responsive Taboola recommendation widget built with TypeScript. This widget displays recommendations from the Taboola API, supporting both organic and sponsored content types.
+A fully functional, responsive Taboola recommendation widget built with TypeScript. This widget displays recommendations from the Taboola API, supporting both organic and sponsored content types with a modern, polished UI.
 
 ## Features
 
 - ✅ **TypeScript Implementation** - Pure TypeScript, no frameworks
-- ✅ **Responsive Design** - Mobile-first approach with breakpoints for mobile, tablet, and desktop
+- ✅ **Responsive Grid Layout** - Modern CSS Grid with 1/2/4 column layouts (mobile/tablet/desktop)
+- ✅ **Polished UI/UX** - Clean card design with consistent heights, proper image aspect ratios, and refined typography
 - ✅ **Dual Content Types** - Supports both organic (same tab) and sponsored (new tab) recommendations
 - ✅ **Extensible Architecture** - Easy to add new recommendation types in the future
 - ✅ **Unit Test Coverage** - Comprehensive test suite using Jest
@@ -21,6 +22,7 @@ taboola-recommendation-widget/
 │   ├── types/            # TypeScript type definitions
 │   ├── models/           # Recommendation item classes
 │   ├── widget/           # Widget core and renderer
+│   ├── styles/           # CSS styles for the widget
 │   └── index.ts          # Entry point
 ├── tests/                # Unit tests
 ├── examples/             # Demo HTML page
@@ -43,26 +45,22 @@ npm install
 
 ## Building
 
-Compile TypeScript to JavaScript:
+Compile TypeScript to JavaScript and copy CSS files:
 ```bash
 npm run build
 ```
 
-The compiled files will be in the `dist/` directory.
-### Basic Usage
+The compiled files will be in the `dist/` directory. **Important:** After making CSS changes, you must run `npm run build` to copy the updated styles to the `dist/` folder.
+
+## Basic Usage
 
 1. Include the compiled JavaScript file in your HTML:
 ```html
-<script src="dist/index.js"></script>
-### Basic Usage
-
-1. Include the compiled JavaScript file in your HTML:
-```javascript
-<script src="dist/index.js"></script>
+<script type="module" src="dist/index.js"></script>
 ```
 
 2. Create a container element:
-```javascript
+```html
 <div id="my-widget"></div>
 ```
 
@@ -71,66 +69,128 @@ The compiled files will be in the `dist/` directory.
 // Using global API
 await TaboolaWidget.init({
   containerId: 'my-widget',
-  count: 4
+  count: 4,
+  sourceType: 'video',
+  sourceId: '214321562187',
+  sourceUrl: 'http://www.site.com/videos/214321562187.html'
 });
+```
+
 ## Demo
 
+1. Build the project:
 ```bash
 npm run build
 ```
 
-Then serve the files using a local server (the API requires CORS, so you'll need a server):
-
+2. Start a local server (the API requires CORS, so you'll need a server):
 ```bash
 # Using Python
 python -m http.server 8000
 
 # Using Node.js (http-server)
-npx http-server
+npx http-server -p 8000
 ```
 
-**Note:** The Taboola API requires a USA VPN to get responses. Make sure you're connected to a USA VPN when testing.
+3. **Important:** Connect to a USA VPN (the Taboola API requires this)
 
-Open `examples/demo.html` in a browser to see the widget in action. Make sure to build the project first:
+4. Open `http://localhost:8000/examples/demo.html` in your browser
+
+## Design & Styling
+
+The widget features a modern, production-ready design:
+
+### Responsive Grid Layout
+- **Mobile** (< 768px): 1 column
+- **Tablet** (768px - 1024px): 2 columns  
+- **Desktop** (> 1024px): 4 columns
+
+### Card Design
+- Consistent card heights across all items
+- 16:9 aspect ratio for all thumbnails
+- Rounded corners (12px border-radius)
+- Subtle shadows and hover effects
+- Clean typography with proper line-height and text clamping
+
+### Typography
+- System font stack for optimal performance
+- Responsive font sizes (13-14px for titles, 12px for descriptions)
+- Text truncation with ellipsis (2 lines max for title and description)
+
+### Image Handling
+- Fixed aspect ratio using CSS `aspect-ratio: 16/9`
+- `object-fit: cover` for consistent image display
+- Smooth zoom effect on hover
+- Lazy loading for performance
+
+## Architecture
+
+### Design Patterns
 
 - **Factory Pattern**: Widget creates appropriate item instances based on `origin` field
 - **Separation of Concerns**: API, Models, Rendering, and Styling are separated into distinct modules
 
+### Content Types
+
+#### Organic Items
+- Open in the same tab
+- No branding displayed
+- Used for internal site recommendations
+
+#### Sponsored Items
+- Open in a new tab
+- Display advertiser branding
+- Used for external sponsored content
+
 ### Extensibility
-Then serve the files using a local server (the API requires CORS, so you'll need a server):
 
 To add a new recommendation type (e.g., Video):
 
 1. Create a new class extending `RecommendationItemBase`:
 ```typescript
 export class VideoItem extends RecommendationItemBase {
-npx http-serveret(): '_self' | '_blank' {
+  protected getLinkTarget(): '_self' | '_blank' {
     return '_blank';
   }
-**Note:** The Taboola API requires a USA VPN to get responses. Make sure you're connected to a USA VPN when testing.
+  
+  render(): HTMLElement {
+    // Custom rendering logic
+  }
+}
 ```
-Open `examples/demo.html` in a browser to see the widget in action. Make sure to build the project first:
-The widget uses a mobile-first responsive grid:
-- **Mobile** (< 768px): 1 column
-- **Tablet** (768px - 1024px): 2 columns
-- **Desktop** (> 1024px): 4 columns
-Open `examples/demo.html` in a browser to see the widget in action. Make sure to build the project first:
 
-- Open in the same tab
-- No branding displayed
-- Used for internal site recommendations
-npx http-server
-Then serve the files using a local server (the API requires CORS, so you'll need a server):
-s
-- Open in a new tab
-**Note:** The Taboola API requires a USA VPN to get responses. Make sure you're connected to a USA VPN when testing.
-Destroys the widget and cleans up resources.
+2. Update the factory method in `TaboolaWidget.createItem()` to handle the new type
 
-### TaboolaApiClient
-npx http-server
+## API Reference
+
+### TaboolaWidget
+
+Main widget controller and renderer.
+
 #### Methods
 
-**Note:** The Taboola API requires a USA VPN to get responses. Make sure you're connected to a USA VPN when testing.get/`): Main widget controller and renderer
+**init(config: WidgetConfig): Promise<void>**
+- Initializes the widget with the provided configuration
+- Fetches recommendations from the Taboola API
+- Renders items in the specified container
+
+**destroy(): void**
+- Destroys the widget and cleans up resources
+
+### WidgetConfig
+
+```typescript
+interface WidgetConfig {
+  containerId: string;      // Required: ID of the container element
+  publisherId?: string;      // Optional: Taboola publisher ID
+  appType?: string;          // Optional: Application type
+  apiKey?: string;           // Optional: API key
+  count?: number;            // Optional: Number of recommendations (default: 4)
+  sourceType?: string;       // Optional: Source type (e.g., 'video')
+  sourceId?: string;         // Optional: Source ID
+  sourceUrl?: string;        // Optional: Source URL
+}
+```
 
 ## Testing
 
@@ -145,6 +205,11 @@ Run tests with:
 npm test
 ```
 
+Run tests in watch mode:
+```bash
+npm run test:watch
+```
+
 ## Browser Support
 
 The widget supports modern browsers with ES2020 support:
@@ -156,9 +221,10 @@ The widget supports modern browsers with ES2020 support:
 ## Performance Considerations
 
 - **Lazy Loading**: Images use native `loading="lazy"` attribute
-- **CSS Containment**: Layout isolation for better performance
+- **CSS Grid**: Efficient layout with minimal reflows
 - **Event Delegation**: Efficient event handling
 - **Minimal DOM Manipulation**: Optimized rendering
+- **CSS Containment**: Layout isolation for better performance
 
 ## Accessibility
 
@@ -167,6 +233,24 @@ The widget supports modern browsers with ES2020 support:
 - Keyboard navigation support (Enter and Space keys)
 - Focus management
 - Alt text for images
+- Proper color contrast ratios
+
+## Development
+
+### Making CSS Changes
+
+1. Edit `src/styles/widget.css`
+2. Run `npm run build` to copy CSS to `dist/styles/widget.css`
+3. Refresh your browser (hard refresh: `Ctrl+Shift+R` or `Cmd+Shift+R`)
+
+### Watch Mode
+
+For TypeScript development:
+```bash
+npm run dev
+```
+
+This will watch for TypeScript changes and recompile automatically.
 
 ## License
 
@@ -175,8 +259,3 @@ MIT
 ## Author
 
 Built as part of the Taboola Frontend Engineering Home Assignment.
-The widget supports modern browsers with ES2020 support:
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
