@@ -24,8 +24,14 @@ export class TaboolaApiClient {
    * Fetches recommendations from Taboola API with retry logic
    * @param config API configuration
    * @param maxRetries Maximum number of retry attempts (default: 3)
-   * @returns Promise with Taboola response
-   * @throws TaboolaApiError if request fails after all retries
+   * @returns Promise with Taboola response. Returns empty list if API has no recommendations available.
+   * @throws TaboolaApiError if request fails after all retries (network errors, HTTP errors, invalid responses)
+   * 
+   * Note: Empty responses (200 OK with empty list) may be legitimate when:
+   * - No recommendations are available for the given source/content
+   * - Geographic restrictions apply
+   * - API rate limiting or temporary unavailability
+   * The method will retry empty responses up to maxRetries times before returning an empty result.
    */
   async fetchRecommendations(config: ApiConfig, maxRetries: number = 3): Promise<TaboolaResponse> {
     const url = this.buildUrl(config);
@@ -62,9 +68,23 @@ export class TaboolaApiClient {
           return data;
         }
 
-        // If list is empty, log and retry
-        console.log(`API returned empty list on attempt ${attempt}, retrying...`);
-        lastError = new TaboolaApiError('API returned empty list', response.status, data);
+        // If list is empty, log the response details for debugging
+        console.warn(`API returned empty list on attempt ${attempt}. Response ID: ${data.id || 'N/A'}, Status: ${response.status}`);
+        console.warn('Full API response:', JSON.stringify(data, null, 2));
+        
+        // Empty list could be legitimate (no recommendations available) or temporary
+        // Only retry if we haven't exhausted retries, but log that it might be legitimate
+        if (attempt < maxRetries) {
+          const delay = attempt * 500; // Exponential backoff: 500ms, 1000ms, 1500ms
+          console.log(`Empty list received, retrying in ${delay}ms (attempt ${attempt}/${maxRetries})...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          lastError = new TaboolaApiError('API returned empty list', response.status, data);
+          continue; // Retry the request
+        } else {
+          // All retries exhausted, return empty response
+          console.warn('API returned empty list after all retries. This may be legitimate (no recommendations available) or an API issue.');
+          return { id: data.id || '', list: [] };
+        }
 
       } catch (error) {
         lastError = error instanceof Error ? error : new Error('Unknown error');
@@ -90,14 +110,7 @@ export class TaboolaApiClient {
       }
     }
 
-    // All retries exhausted with empty list
-    if (lastError instanceof TaboolaApiError && lastError.message === 'API returned empty list') {
-      console.warn('API returned empty list after all retries');
-      // Return empty response instead of throwing
-      return { id: '', list: [] };
-    }
-
-    // All retries exhausted with other error
+    // All retries exhausted with other error (should not reach here for empty lists)
     throw lastError || new TaboolaApiError('Request failed after all retries');
   }
 
