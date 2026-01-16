@@ -63,13 +63,29 @@ describe('TaboolaApiClient', () => {
         list: [],
       };
 
-      (fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
+      // Mock 3 responses (for retries) - all return empty list, so it will return empty after retries
+      (fetch as jest.Mock)
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: async () => mockResponse,
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: async () => mockResponse,
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: async () => mockResponse,
+        });
 
-      await client.fetchRecommendations(mockConfig);
+      const result = await client.fetchRecommendations(mockConfig);
 
+      // Should return empty list after retries
+      expect(result.list).toEqual([]);
+      
       const fetchUrl = (fetch as jest.Mock).mock.calls[0][0];
       expect(fetchUrl).toContain('app.type=desktop');
       expect(fetchUrl).toContain('app.apikey=test-api-key');
@@ -81,11 +97,23 @@ describe('TaboolaApiClient', () => {
     });
 
     it('should throw TaboolaApiError on HTTP error', async () => {
-      (fetch as jest.Mock).mockResolvedValueOnce({
-        ok: false,
-        status: 404,
-        text: async () => 'Not Found',
-      });
+      // Mock 3 responses (for retries) - all return 404
+      (fetch as jest.Mock)
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+          text: async () => 'Not Found',
+        })
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+          text: async () => 'Not Found',
+        })
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+          text: async () => 'Not Found',
+        });
 
       try {
         await client.fetchRecommendations(mockConfig);
@@ -134,10 +162,23 @@ describe('TaboolaApiClient', () => {
         list: [],
       };
 
-      (fetch as jest.Mock).mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockResponse,
-      });
+      // Mock 3 responses (for retries) - all return empty list
+      (fetch as jest.Mock)
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: async () => mockResponse,
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: async () => mockResponse,
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          status: 200,
+          json: async () => mockResponse,
+        });
 
       await client.fetchRecommendations(minimalConfig);
 

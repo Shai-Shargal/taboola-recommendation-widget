@@ -29,20 +29,75 @@ export abstract class RecommendationItemBase {
   }
 
   /**
+   * Extracts the redirect URL from a notify-click URL
+   * The Taboola API returns notify-click URLs with a 'redir' parameter
+   * @param notifyClickUrl The notify-click URL from the API
+   * @returns The actual destination URL, or the original URL if parsing fails
+   */
+  protected extractRedirectUrl(notifyClickUrl: string): string {
+    try {
+      const url = new URL(notifyClickUrl);
+      const redirParam = url.searchParams.get('redir');
+      if (redirParam) {
+        return decodeURIComponent(redirParam);
+      }
+    } catch (error) {
+      console.warn('Failed to parse notify-click URL:', error);
+    }
+    // Fallback to original URL if parsing fails
+    return notifyClickUrl;
+  }
+
+  /**
+   * Tracks the click by calling the notify-click URL
+   * Uses a hidden image to fire the tracking request
+   * @param notifyClickUrl The notify-click URL to call
+   */
+  protected trackClick(notifyClickUrl: string): void {
+    try {
+      // Use a hidden image to fire the tracking request
+      // This is a common pattern for click tracking that doesn't block navigation
+      const img = new Image();
+      img.style.display = 'none';
+      img.src = notifyClickUrl;
+      // Add to DOM temporarily to ensure the request fires
+      document.body.appendChild(img);
+      // Remove after a short delay
+      setTimeout(() => {
+        if (img.parentNode) {
+          img.parentNode.removeChild(img);
+        }
+      }, 1000);
+    } catch (error) {
+      console.warn('Failed to track click:', error);
+      // Continue with navigation even if tracking fails
+    }
+  }
+
+  /**
    * Handles click event on the recommendation item
+   * Implements proper click tracking via notify-click URL
    */
   protected handleClick(event: MouseEvent): void {
     event.preventDefault();
-    const url = this.data.url;
+    const notifyClickUrl = this.data.url;
     
-    if (url) {
-      // Determine target based on item type
-      const target = this.getLinkTarget();
-      if (target === '_blank') {
-        window.open(url, '_blank', 'noopener,noreferrer');
-      } else {
-        window.location.href = url;
-      }
+    if (!notifyClickUrl) {
+      return;
+    }
+
+    // Extract the actual destination URL from the notify-click URL
+    const redirectUrl = this.extractRedirectUrl(notifyClickUrl);
+    
+    // Track the click by calling the notify-click URL
+    this.trackClick(notifyClickUrl);
+    
+    // Navigate to the actual destination
+    const target = this.getLinkTarget();
+    if (target === '_blank') {
+      window.open(redirectUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      window.location.href = redirectUrl;
     }
   }
 
