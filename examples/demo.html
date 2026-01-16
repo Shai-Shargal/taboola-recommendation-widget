@@ -109,19 +109,11 @@
     </header>
 
     <div class="demo-section">
-      <h2>Sponsored Recommendations</h2>
+      <h2>Recommendations (Demo Mode)</h2>
       <div class="info-box">
-        <p><strong>Note:</strong> This widget displays sponsored content from the Taboola API. Clicking on items will open them in a <strong>new tab</strong>. Notice the branding/advertiser name at the bottom of each card.</p>
+        <p><strong>Demo Mode Enabled:</strong> This demo shows both <strong>Organic</strong> (opens in same tab, no branding) and <strong>Sponsored</strong> (opens in new tab, shows branding) recommendations. In production, the API determines which type to show.</p>
       </div>
       <div id="taboola-widget-1" class="widget-container"></div>
-    </div>
-
-    <div class="demo-section">
-      <h2>Organic Recommendations (Demo)</h2>
-      <div class="info-box" style="background: #e8f5e9; border-left-color: #4caf50;">
-        <p><strong>Demo Mode:</strong> This section shows organic recommendations with mock data for testing purposes. Clicking on items will open them in the <strong>same tab</strong>. Notice there's no branding displayed.</p>
-      </div>
-      <div id="taboola-widget-2" class="widget-container"></div>
     </div>
 
   </div>
@@ -132,81 +124,24 @@
 
   <!-- Load the compiled widget -->
   <script type="module">
-    // Import the widget module and classes
+    // Import the widget module
     import '../dist/index.js';
-    import { OrganicItem } from '../dist/index.js';
-    import { WidgetRenderer } from '../dist/widget/renderer.js';
     
-    // Mock data for organic recommendations demo
-    const mockOrganicData = [
-      {
-        type: 'article',
-        thumbnail: [{ url: 'https://res.cloudinary.com/deok6xibc/image/upload/v1768575376/WhatsApp_Image_2026-01-16_at_16.42.48_ocyzqh.jpg' }],
-        description: 'Exciting news! A young programmer has been accepted to Taboola as an intern frontend engineer. This organic recommendation demonstrates how content opens in the same tab without branding.',
-        name: 'Young Programmer Accepted to Taboola as Intern Frontend Engineer',
-        created: '2024-01-15',
-        duration: '0',
-        views: '0',
-        categories: ['career', 'technology'],
-        id: 'organic-demo-1',
-        origin: 'organic',
-        url: 'https://example.com/article1'
-      },
-      {
-        type: 'article',
-        thumbnail: [{ url: 'https://via.placeholder.com/300x200?text=Organic+Article+2' }],
-        description: 'Learn about modern web development practices and best practices for building scalable applications.',
-        name: 'Modern Web Development Best Practices',
-        created: '2024-01-14',
-        duration: '0',
-        views: '0',
-        categories: ['web-development'],
-        id: 'organic-demo-2',
-        origin: 'organic',
-        url: 'https://example.com/article2'
-      },
-      {
-        type: 'article',
-        thumbnail: [{ url: 'https://via.placeholder.com/300x200?text=Organic+Article+3' }],
-        description: 'Explore the latest trends in frontend frameworks and how they compare to vanilla JavaScript.',
-        name: 'Frontend Frameworks Comparison 2024',
-        created: '2024-01-13',
-        duration: '0',
-        views: '0',
-        categories: ['frontend'],
-        id: 'organic-demo-3',
-        origin: 'organic',
-        url: 'https://example.com/article3'
-      },
-      {
-        type: 'article',
-        thumbnail: [{ url: 'https://via.placeholder.com/300x200?text=Organic+Article+4' }],
-        description: 'A comprehensive guide to responsive design principles and mobile-first development approach.',
-        name: 'Responsive Design: Mobile-First Approach',
-        created: '2024-01-12',
-        duration: '0',
-        views: '0',
-        categories: ['design'],
-        id: 'organic-demo-4',
-        origin: 'organic',
-        url: 'https://example.com/article4'
-      }
-    ];
-    
-    // Initialize sponsored widget (from API)
-    function initSponsoredWidget() {
+    // Wait for the global API to be exposed
+    function initWidget() {
       if (window.TaboolaWidget) {
-        console.log('Initializing Sponsored Widget...');
+        console.log('Initializing Taboola Widget...');
         window.TaboolaWidget.init({
           containerId: 'taboola-widget-1',
           count: 4,
           sourceType: 'video',
           sourceId: 'demo123',
-          sourceUrl: 'https://example.com'
+          sourceUrl: 'https://example.com',
+          demoMode: true // Enable demo mode to show both organic and sponsored
         }).then(() => {
-          console.log('Sponsored Widget initialized successfully!');
+          console.log('Widget initialized successfully!');
         }).catch((error) => {
-          console.error('Failed to initialize sponsored widget:', error);
+          console.error('Failed to initialize widget:', error);
           const container = document.getElementById('taboola-widget-1');
           if (container) {
             container.innerHTML = 
@@ -219,55 +154,16 @@
           }
         });
       } else {
-        setTimeout(initSponsoredWidget, 100);
-      }
-    }
-    
-    // Initialize organic widget (with mock data)
-    function initOrganicWidget() {
-      const container = document.getElementById('taboola-widget-2');
-      if (!container) return;
-      
-      // Wait for modules to load
-      if (typeof OrganicItem === 'undefined' || typeof WidgetRenderer === 'undefined') {
-        setTimeout(initOrganicWidget, 100);
-        return;
-      }
-      
-      try {
-        // Create organic items from mock data
-        const items = mockOrganicData.map(data => new OrganicItem(data));
-        
-        // Render items
-        const renderer = new WidgetRenderer();
-        renderer.injectStyles();
-        renderer.render(container, items);
-        
-        console.log('Organic Widget (demo) initialized successfully!');
-      } catch (error) {
-        console.error('Failed to initialize organic widget:', error);
-        container.innerHTML = 
-          '<div style="padding: 20px; text-align: center; color: #e74c3c; border: 2px solid #e74c3c; border-radius: 8px;">' +
-          '<p><strong>Error loading organic widget</strong></p>' +
-          '<p>' + error.message + '</p>' +
-          '</div>';
+        // Wait a bit more for module to load
+        setTimeout(initWidget, 100);
       }
     }
 
-    // Start initialization after modules load
-    function initAll() {
-      if (window.TaboolaWidget) {
-        initSponsoredWidget();
-        initOrganicWidget();
-      } else {
-        setTimeout(initAll, 100);
-      }
-    }
-
+    // Start initialization after a short delay to allow module to load
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => setTimeout(initAll, 200));
+      document.addEventListener('DOMContentLoaded', () => setTimeout(initWidget, 200));
     } else {
-      setTimeout(initAll, 200);
+      setTimeout(initWidget, 200);
     }
   </script>
 </body>

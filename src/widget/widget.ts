@@ -17,6 +17,7 @@ export interface WidgetConfig extends Partial<ApiConfig> {
   sourceType?: string;
   sourceId?: string;
   sourceUrl?: string;
+  demoMode?: boolean; // If true, injects mock organic items for testing
 }
 
 /**
@@ -76,8 +77,14 @@ export class TaboolaWidget {
 
       const response = await this.apiClient.fetchRecommendations(apiConfig);
 
+      // In demo mode, inject some organic items for testing
+      let itemsList = [...response.list];
+      if (this.config.demoMode) {
+        itemsList = this.injectDemoOrganicItems(itemsList);
+      }
+
       // Create items from response
-      const items = response.list.map((item) => this.createItem(item));
+      const items = itemsList.map((item) => this.createItem(item));
 
       // Render items
       this.renderer.render(this.container, items);
@@ -99,6 +106,23 @@ export class TaboolaWidget {
     } else {
       return new SponsoredItem(data);
     }
+  }
+
+  /**
+   * Injects mock organic items for demo/testing purposes
+   */
+  private injectDemoOrganicItems(sponsoredItems: RecommendationItem[]): RecommendationItem[] {
+    // Take first 2 sponsored items and convert them to organic for demo
+    const organicItems: RecommendationItem[] = sponsoredItems.slice(0, 2).map((item, index) => ({
+      ...item,
+      origin: 'organic' as const,
+      id: `organic-demo-${index}-${item.id}`,
+      // Remove branding for organic items
+      branding: undefined,
+    }));
+
+    // Mix: first 2 organic, then rest sponsored
+    return [...organicItems, ...sponsoredItems.slice(2)];
   }
 
   /**

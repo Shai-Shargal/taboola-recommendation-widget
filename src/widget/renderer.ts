@@ -147,8 +147,6 @@ export class WidgetRenderer {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center 20%;
-        background: #f5f5f5;
       }
 
       .taboola-recommendation-item__content {
