@@ -30,3 +30,7 @@ yarn-error.log*
 
 # TypeScript
 *.tsbuildinfo
+
+# Temporary files
+test-api.ts
+test.html
