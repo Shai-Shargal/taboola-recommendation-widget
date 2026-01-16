@@ -134,39 +134,45 @@
 
   <!-- Load the compiled widget -->
   <script type="module">
-    // Import the widget (assuming it's been built and served)
-    // In a real scenario, you would load the compiled JS file
-    // For this demo, we'll use a simple initialization
+    // Import the widget module
+    import '../dist/index.js';
     
-    // Wait for DOM to be ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initWidget);
-    } else {
-      initWidget();
+    // Wait for the global API to be exposed
+    function initWidget() {
+      if (window.TaboolaWidget) {
+        console.log('Initializing Taboola Widget...');
+        window.TaboolaWidget.init({
+          containerId: 'taboola-widget-1',
+          count: 4,
+          sourceType: 'video',
+          sourceId: 'demo123',
+          sourceUrl: 'https://example.com'
+        }).then(() => {
+          console.log('Widget initialized successfully!');
+        }).catch((error) => {
+          console.error('Failed to initialize widget:', error);
+          const container = document.getElementById('taboola-widget-1');
+          if (container) {
+            container.innerHTML = 
+              '<div style="padding: 20px; text-align: center; color: #e74c3c; border: 2px solid #e74c3c; border-radius: 8px;">' +
+              '<p><strong>Error loading widget</strong></p>' +
+              '<p>' + error.message + '</p>' +
+              '<p style="margin-top: 10px; font-size: 12px; color: #666;">Check the browser console for more details.</p>' +
+              '<p style="margin-top: 10px; font-size: 12px; color: #666;"><strong>Note:</strong> Taboola API requires USA VPN connection.</p>' +
+              '</div>';
+          }
+        });
+      } else {
+        // Wait a bit more for module to load
+        setTimeout(initWidget, 100);
+      }
     }
 
-    async function initWidget() {
-      try {
-        // For demo purposes, we'll use the global API if available
-        // In production, you would import the module
-        if (window.TaboolaWidget) {
-          await window.TaboolaWidget.init({
-            containerId: 'taboola-widget-1',
-            count: 4,
-            sourceType: 'video',
-            sourceId: 'demo123',
-            sourceUrl: 'https://example.com'
-          });
-        } else {
-          // Fallback: show message if widget not loaded
-          document.getElementById('taboola-widget-1').innerHTML = 
-            '<p style="padding: 20px; text-align: center; color: #999;">Please build the project first (npm run build) and load the compiled JavaScript file.</p>';
-        }
-      } catch (error) {
-        console.error('Failed to initialize widget:', error);
-        document.getElementById('taboola-widget-1').innerHTML = 
-          '<p style="padding: 20px; text-align: center; color: #e74c3c;">Error loading widget. Please check the console for details.</p>';
-      }
+    // Start initialization after a short delay to allow module to load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => setTimeout(initWidget, 200));
+    } else {
+      setTimeout(initWidget, 200);
     }
   </script>
 </body>
