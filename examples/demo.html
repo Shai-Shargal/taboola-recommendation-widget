@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taboola Recommendation Widget - Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background: white;
+      padding: 40px 20px;
+      margin-bottom: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .subtitle {
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+
+    .demo-section {
+      background: white;
+      padding: 30px;
+      margin-bottom: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .demo-section h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    .widget-container {
+      margin-top: 20px;
+      min-height: 200px;
+    }
+
+    .info-box {
+      background: #e8f4f8;
+      border-left: 4px solid #3498db;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: #2c3e50;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #7f8c8d;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      header {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .demo-section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Taboola Recommendation Widget</h1>
+      <p class="subtitle">Frontend Engineering - Home Assignment Demo</p>
+    </header>
+
+    <div class="demo-section">
+      <h2>Sponsored Recommendations</h2>
+      <div class="info-box">
+        <p><strong>Note:</strong> This widget displays sponsored content. Clicking on items will open them in a new tab. The widget is fully responsive and adapts to different screen sizes.</p>
+      </div>
+      <div id="taboola-widget-1" class="widget-container"></div>
+    </div>
+
+    <div class="demo-section">
+      <h2>Responsive Design</h2>
+      <p>This widget automatically adjusts its layout based on screen size:</p>
+      <ul style="margin: 15px 0; padding-left: 20px;">
+        <li><strong>Mobile</strong> (&lt; 768px): 1 column</li>
+        <li><strong>Tablet</strong> (768px - 1024px): 2 columns</li>
+        <li><strong>Desktop</strong> (&gt; 1024px): 4 columns</li>
+      </ul>
+      <p>Try resizing your browser window to see the responsive behavior!</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Taboola Recommendation Widget - Built with TypeScript</p>
+  </footer>
+
+  <!-- Load the compiled widget -->
+  <script type="module">
+    // Import the widget (assuming it's been built and served)
+    // In a real scenario, you would load the compiled JS file
+    // For this demo, we'll use a simple initialization
+    
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initWidget);
+    } else {
+      initWidget();
+    }
+
+    async function initWidget() {
+      try {
+        // For demo purposes, we'll use the global API if available
+        // In production, you would import the module
+        if (window.TaboolaWidget) {
+          await window.TaboolaWidget.init({
+            containerId: 'taboola-widget-1',
+            count: 4,
+            sourceType: 'video',
+            sourceId: 'demo123',
+            sourceUrl: 'https://example.com'
+          });
+        } else {
+          // Fallback: show message if widget not loaded
+          document.getElementById('taboola-widget-1').innerHTML = 
+            '<p style="padding: 20px; text-align: center; color: #999;">Please build the project first (npm run build) and load the compiled JavaScript file.</p>';
+        }
+      } catch (error) {
+        console.error('Failed to initialize widget:', error);
+        document.getElementById('taboola-widget-1').innerHTML = 
+          '<p style="padding: 20px; text-align: center; color: #e74c3c;">Error loading widget. Please check the console for details.</p>';
+      }
+    }
+  </script>
+</body>
+</html>
