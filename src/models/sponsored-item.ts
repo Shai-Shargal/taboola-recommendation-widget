@@ -21,22 +21,48 @@ export class SponsoredItem extends RecommendationItemBase {
     article.setAttribute('data-id', this.data.id);
 
     // Thumbnail
+    const imgWrapper = document.createElement('div');
+    imgWrapper.className = 'taboola-recommendation-item__thumbnail';
+    
     const thumbnailUrl = this.getThumbnailUrl();
     if (thumbnailUrl) {
-      const imgWrapper = document.createElement('div');
-      imgWrapper.className = 'taboola-recommendation-item__thumbnail';
-      
       const img = document.createElement('img');
       img.src = thumbnailUrl;
       img.alt = this.getThumbnailAlt();
       img.loading = 'lazy';
+      
+      // Handle image load error
+      img.onerror = () => {
+        img.style.display = 'none';
+        if (!imgWrapper.querySelector('.taboola-recommendation-item__thumbnail-placeholder')) {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'taboola-recommendation-item__thumbnail-placeholder';
+          placeholder.setAttribute('aria-hidden', 'true');
+          imgWrapper.appendChild(placeholder);
+        }
+      };
+      
       imgWrapper.appendChild(img);
-      article.appendChild(imgWrapper);
+    } else {
+      // Show placeholder if no image URL
+      const placeholder = document.createElement('div');
+      placeholder.className = 'taboola-recommendation-item__thumbnail-placeholder';
+      placeholder.setAttribute('aria-hidden', 'true');
+      imgWrapper.appendChild(placeholder);
     }
+    
+    article.appendChild(imgWrapper);
 
     // Content wrapper
     const content = document.createElement('div');
     content.className = 'taboola-recommendation-item__content';
+
+    // Sponsored badge
+    const badge = document.createElement('span');
+    badge.className = 'taboola-recommendation-item__badge';
+    badge.textContent = 'Sponsored';
+    badge.setAttribute('aria-label', 'Sponsored content');
+    content.appendChild(badge);
 
     // Title
     const title = document.createElement('h3');
@@ -44,21 +70,21 @@ export class SponsoredItem extends RecommendationItemBase {
     title.textContent = this.data.name || '';
     content.appendChild(title);
 
+    // Source/Branding
+    if (this.data.branding) {
+      const source = document.createElement('div');
+      source.className = 'taboola-recommendation-item__source';
+      source.textContent = this.data.branding;
+      source.setAttribute('aria-label', `Source: ${this.data.branding}`);
+      content.appendChild(source);
+    }
+
     // Description
     if (this.data.description) {
       const description = document.createElement('p');
       description.className = 'taboola-recommendation-item__description';
       description.textContent = this.data.description;
       content.appendChild(description);
-    }
-
-    // Branding (sponsored items show advertiser name)
-    if (this.data.branding) {
-      const branding = document.createElement('div');
-      branding.className = 'taboola-recommendation-item__branding';
-      branding.textContent = this.data.branding;
-      branding.setAttribute('aria-label', `Sponsored by ${this.data.branding}`);
-      content.appendChild(branding);
     }
 
     article.appendChild(content);

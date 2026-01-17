@@ -3,7 +3,7 @@ import { RecommendationItemBase } from './recommendation-item';
 
 /**
  * Organic recommendation item
- * Opens links in the same tab
+ * Opens links in a new tab
  */
 export class OrganicItem extends RecommendationItemBase {
   constructor(data: RecommendationItem) {
@@ -11,7 +11,7 @@ export class OrganicItem extends RecommendationItemBase {
   }
 
   protected getLinkTarget(): '_self' | '_blank' {
-    return '_self';
+    return '_blank';
   }
 
   render(): HTMLElement {
@@ -21,18 +21,37 @@ export class OrganicItem extends RecommendationItemBase {
     article.setAttribute('data-id', this.data.id);
 
     // Thumbnail
+    const imgWrapper = document.createElement('div');
+    imgWrapper.className = 'taboola-recommendation-item__thumbnail';
+    
     const thumbnailUrl = this.getThumbnailUrl();
     if (thumbnailUrl) {
-      const imgWrapper = document.createElement('div');
-      imgWrapper.className = 'taboola-recommendation-item__thumbnail';
-      
       const img = document.createElement('img');
       img.src = thumbnailUrl;
       img.alt = this.getThumbnailAlt();
       img.loading = 'lazy';
+      
+      // Handle image load error
+      img.onerror = () => {
+        img.style.display = 'none';
+        if (!imgWrapper.querySelector('.taboola-recommendation-item__thumbnail-placeholder')) {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'taboola-recommendation-item__thumbnail-placeholder';
+          placeholder.setAttribute('aria-hidden', 'true');
+          imgWrapper.appendChild(placeholder);
+        }
+      };
+      
       imgWrapper.appendChild(img);
-      article.appendChild(imgWrapper);
+    } else {
+      // Show placeholder if no image URL
+      const placeholder = document.createElement('div');
+      placeholder.className = 'taboola-recommendation-item__thumbnail-placeholder';
+      placeholder.setAttribute('aria-hidden', 'true');
+      imgWrapper.appendChild(placeholder);
     }
+    
+    article.appendChild(imgWrapper);
 
     // Content wrapper
     const content = document.createElement('div');
@@ -43,6 +62,14 @@ export class OrganicItem extends RecommendationItemBase {
     title.className = 'taboola-recommendation-item__title';
     title.textContent = this.data.name || '';
     content.appendChild(title);
+
+    // Source/Branding
+    if (this.data.branding) {
+      const source = document.createElement('div');
+      source.className = 'taboola-recommendation-item__source';
+      source.textContent = this.data.branding;
+      content.appendChild(source);
+    }
 
     // Description
     if (this.data.description) {
@@ -58,7 +85,7 @@ export class OrganicItem extends RecommendationItemBase {
     article.addEventListener('click', (e) => this.handleClick(e));
     article.setAttribute('role', 'link');
     article.setAttribute('tabindex', '0');
-    article.setAttribute('aria-label', `${this.data.name || 'Recommendation'}. Click to open.`);
+    article.setAttribute('aria-label', `${this.data.name || 'Recommendation'}. Click to open in new tab.`);
 
     // Keyboard support
     article.addEventListener('keydown', (e) => {

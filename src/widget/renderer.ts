@@ -7,6 +7,12 @@ export class WidgetRenderer {
     const wrapper = document.createElement('div');
     wrapper.className = 'taboola-widget';
 
+    // Section header
+    const header = document.createElement('h2');
+    header.className = 'taboola-widget__header';
+    header.textContent = 'Recommended for you';
+    wrapper.appendChild(header);
+
     const grid = document.createElement('div');
     grid.className = 'taboola-widget__grid';
 
