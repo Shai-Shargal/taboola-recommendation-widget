@@ -44,7 +44,6 @@ export abstract class RecommendationItemBase {
     } catch (error) {
       console.warn('Failed to parse notify-click URL:', error);
     }
-    // Fallback to original URL if parsing fails
     return notifyClickUrl;
   }
 
@@ -53,9 +52,7 @@ export abstract class RecommendationItemBase {
       const img = new Image();
       img.style.display = 'none';
       img.src = notifyClickUrl;
-      // Add to DOM temporarily to ensure the request fires
       document.body.appendChild(img);
-      // Remove after a short delay
       setTimeout(() => {
         if (img.parentNode) {
           img.parentNode.removeChild(img);
@@ -63,7 +60,6 @@ export abstract class RecommendationItemBase {
       }, 1000);
     } catch (error) {
       console.warn('Failed to track click:', error);
-      // Continue with navigation even if tracking fails
     }
   }
 
@@ -79,13 +75,8 @@ export abstract class RecommendationItemBase {
       return;
     }
 
-    // Extract the actual destination URL from the notify-click URL
     const redirectUrl = this.extractRedirectUrl(notifyClickUrl);
-    
-    // Track the click by calling the notify-click URL
     this.trackClick(notifyClickUrl);
-    
-    // Navigate to the actual destination
     const target = this.getLinkTarget();
     if (target === '_blank') {
       window.open(redirectUrl, '_blank', 'noopener,noreferrer');

@@ -5,9 +5,10 @@ A fully functional, responsive Taboola recommendation widget built with TypeScri
 ## Features
 
 - ✅ **TypeScript Implementation** - Pure TypeScript, no frameworks
-- ✅ **Responsive Grid Layout** - Modern CSS Grid with 1/2/4 column layouts (mobile/tablet/desktop)
+- ✅ **Responsive Grid Layout** - Modern CSS Grid with 3/2/1 column layouts (desktop/tablet/mobile)
 - ✅ **Polished UI/UX** - Clean card design with consistent heights, proper image aspect ratios, and refined typography
-- ✅ **Dual Content Types** - Supports both organic (same tab) and sponsored (new tab) recommendations
+- ✅ **Dual Content Types** - Supports both organic and sponsored recommendations (both open in new tab)
+- ✅ **Demo Mode** - Toggle to show demo recommendation card for testing
 - ✅ **Extensible Architecture** - Easy to add new recommendation types in the future
 - ✅ **Unit Test Coverage** - Comprehensive test suite using Jest
 - ✅ **Accessibility** - ARIA labels, keyboard navigation, and semantic HTML
@@ -22,6 +23,8 @@ taboola-recommendation-widget/
 │   ├── types/            # TypeScript type definitions
 │   ├── models/           # Recommendation item classes
 │   ├── widget/           # Widget core and renderer
+│   ├── demo/             # Demo mode utilities
+│   ├── dom/               # DOM building utilities
 │   ├── styles/           # CSS styles for the widget
 │   └── index.ts          # Entry point
 ├── tests/                # Unit tests
@@ -103,14 +106,15 @@ The widget features a modern, production-ready design:
 ### Responsive Grid Layout
 - **Mobile** (< 768px): 1 column
 - **Tablet** (768px - 1024px): 2 columns  
-- **Desktop** (> 1024px): 4 columns
+- **Desktop** (> 1024px): 3 columns
 
 ### Card Design
 - Consistent card heights across all items
 - 16:9 aspect ratio for all thumbnails
-- Rounded corners (12px border-radius)
-- Subtle shadows and hover effects
+- Rounded corners (4px border-radius)
+- Subtle hover effects (opacity and transform)
 - Clean typography with proper line-height and text clamping
+- Image placeholder for missing or failed images
 
 ### Typography
 - System font stack for optimal performance
@@ -133,14 +137,23 @@ The widget features a modern, production-ready design:
 ### Content Types
 
 #### Organic Items
-- Open in the same tab
-- No branding displayed
+- Open in a new tab
+- Display branding if available
 - Used for internal site recommendations
 
 #### Sponsored Items
 - Open in a new tab
+- Display "Sponsored" badge
 - Display advertiser branding
 - Used for external sponsored content
+
+### Demo Mode
+
+The widget includes a demo mode toggle that allows you to add a demo recommendation card to the list. When enabled:
+- A demo card appears as the first item
+- The demo card is clearly labeled with a "DEMO" badge
+- The demo card uses the same rendering logic as real recommendations
+- Useful for testing and demonstrations
 
 ### Extensibility
 

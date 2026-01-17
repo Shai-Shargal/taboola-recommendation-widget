@@ -20,7 +20,6 @@ export class SponsoredItem extends RecommendationItemBase {
     article.setAttribute('data-origin', 'sponsored');
     article.setAttribute('data-id', this.data.id);
 
-    // Thumbnail
     const imgWrapper = document.createElement('div');
     imgWrapper.className = 'taboola-recommendation-item__thumbnail';
     
@@ -31,7 +30,6 @@ export class SponsoredItem extends RecommendationItemBase {
       img.alt = this.getThumbnailAlt();
       img.loading = 'lazy';
       
-      // Handle image load error
       img.onerror = () => {
         img.style.display = 'none';
         if (!imgWrapper.querySelector('.taboola-recommendation-item__thumbnail-placeholder')) {
@@ -44,7 +42,6 @@ export class SponsoredItem extends RecommendationItemBase {
       
       imgWrapper.appendChild(img);
     } else {
-      // Show placeholder if no image URL
       const placeholder = document.createElement('div');
       placeholder.className = 'taboola-recommendation-item__thumbnail-placeholder';
       placeholder.setAttribute('aria-hidden', 'true');
@@ -53,24 +50,20 @@ export class SponsoredItem extends RecommendationItemBase {
     
     article.appendChild(imgWrapper);
 
-    // Content wrapper
     const content = document.createElement('div');
     content.className = 'taboola-recommendation-item__content';
 
-    // Sponsored badge
     const badge = document.createElement('span');
     badge.className = 'taboola-recommendation-item__badge';
     badge.textContent = 'Sponsored';
     badge.setAttribute('aria-label', 'Sponsored content');
     content.appendChild(badge);
 
-    // Title
     const title = document.createElement('h3');
     title.className = 'taboola-recommendation-item__title';
     title.textContent = this.data.name || '';
     content.appendChild(title);
 
-    // Source/Branding
     if (this.data.branding) {
       const source = document.createElement('div');
       source.className = 'taboola-recommendation-item__source';
@@ -79,7 +72,6 @@ export class SponsoredItem extends RecommendationItemBase {
       content.appendChild(source);
     }
 
-    // Description
     if (this.data.description) {
       const description = document.createElement('p');
       description.className = 'taboola-recommendation-item__description';
@@ -89,13 +81,11 @@ export class SponsoredItem extends RecommendationItemBase {
 
     article.appendChild(content);
 
-    // Click handler
     article.addEventListener('click', (e) => this.handleClick(e));
     article.setAttribute('role', 'link');
     article.setAttribute('tabindex', '0');
     article.setAttribute('aria-label', `${this.data.name || 'Recommendation'}. Sponsored content. Click to open in new tab.`);
 
-    // Keyboard support
     article.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();

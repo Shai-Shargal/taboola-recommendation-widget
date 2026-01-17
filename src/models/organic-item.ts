@@ -1,7 +1,10 @@
 import { RecommendationItem } from '../types/recommendation';
 import { RecommendationItemBase } from './recommendation-item';
 
-
+/**
+ * Organic recommendation item
+ * Opens links in a new tab
+ */
 export class OrganicItem extends RecommendationItemBase {
   constructor(data: RecommendationItem) {
     super(data);
@@ -71,7 +74,6 @@ export class OrganicItem extends RecommendationItemBase {
 
     article.appendChild(content);
 
-    // Click handler
     article.addEventListener('click', (e) => this.handleClick(e));
     article.setAttribute('role', 'link');
     article.setAttribute('tabindex', '0');

@@ -17,10 +17,8 @@ export class WidgetRenderer {
     const wrapper = document.createElement('div');
     wrapper.className = 'taboola-widget';
 
-    // Header with demo mode toggle
     const header = buildWidgetHeader(this.demoModeEnabled, (enabled) => {
       this.demoModeEnabled = enabled;
-      // Re-render with updated demo mode state
       if (this.currentContainer) {
         this.render(this.currentContainer, this.currentItems);
       }
@@ -30,7 +28,6 @@ export class WidgetRenderer {
     const grid = document.createElement('div');
     grid.className = 'taboola-widget__grid';
 
-    // Prepend demo card if demo mode is enabled
     if (this.demoModeEnabled) {
       const demoElement = this.createDemoItem();
       grid.appendChild(demoElement);
