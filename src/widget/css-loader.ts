@@ -12,9 +12,7 @@ export function loadStyles(): void {
   const link = document.createElement('link');
   link.id = styleId;
   link.rel = 'stylesheet';
-  const currentPath = window.location.pathname;
-  const baseDir = currentPath.endsWith('/') ? currentPath : currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
-  link.href = window.location.origin + baseDir + 'dist/styles/widget.css';
+  link.href = window.location.origin + '/dist/styles/widget.css';
 
   document.head.appendChild(link);
   stylesLoaded = true;
