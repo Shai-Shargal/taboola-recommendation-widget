@@ -42,9 +42,16 @@ jobs:
           # Copy dist folder
           cp -r dist deploy/
           
+          # Copy demo CSS and JS files
+          cp examples/demo.css deploy/
+          cp examples/demo.js deploy/
+          
           # Copy and prepare demo.html as index.html
-          # Update the path to dist/index.js to work from root
-          sed 's|../dist/index.js|./dist/index.js|g' examples/demo.html > deploy/index.html
+          # Update paths to work from root
+          sed -e 's|../dist/index.js|./dist/index.js|g' \
+              -e 's|href="demo.css"|href="./demo.css"|g' \
+              -e 's|src="demo.js"|src="./demo.js"|g' \
+              examples/demo.html > deploy/index.html
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
