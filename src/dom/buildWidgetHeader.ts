@@ -1,9 +1,4 @@
-/**
- * Builds the widget header with title and demo mode toggle
- * @param demoEnabled Whether demo mode is currently enabled
- * @param onToggle Callback function called when toggle state changes
- * @returns HTMLElement containing the header structure
- */
+
 export function buildWidgetHeader(
   demoEnabled: boolean,
   onToggle: (enabled: boolean) => void
@@ -16,7 +11,6 @@ export function buildWidgetHeader(
   header.textContent = 'Recommended for you';
   headerContainer.appendChild(header);
 
-  // Demo mode toggle
   const toggleContainer = document.createElement('div');
   toggleContainer.className = 'taboola-widget__demo-toggle';
   

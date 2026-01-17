@@ -1,9 +1,6 @@
 import { RecommendationItem } from '../types/recommendation';
 
-/**
- * Creates demo recommendation data for the demo mode feature
- * @returns RecommendationItem with demo content
- */
+
 export function createDemoRecommendation(): RecommendationItem {
   return {
     type: 'article',

@@ -48,15 +48,8 @@ export abstract class RecommendationItemBase {
     return notifyClickUrl;
   }
 
-  /**
-   * Tracks the click by calling the notify-click URL
-   * Uses a hidden image to fire the tracking request
-   * @param notifyClickUrl The notify-click URL to call
-   */
   protected trackClick(notifyClickUrl: string): void {
     try {
-      // Use a hidden image to fire the tracking request
-      // This is a common pattern for click tracking that doesn't block navigation
       const img = new Image();
       img.style.display = 'none';
       img.src = notifyClickUrl;
