@@ -8,7 +8,7 @@ export function createDemoRecommendation(): RecommendationItem {
       url: 'https://res.cloudinary.com/deok6xibc/image/upload/f_auto,q_auto,w_900,c_fill,g_face/v1768664210/MySelf_eenq2b.jpg'
     }],
     description: 'Unofficial demo ad 😄 Built with React + real Taboola API data.',
-    name: 'Breaking: Shai got hired at Taboola 🎉 (Demo)',
+    name: 'Breaking: Shai got hired at Taboola 🎉',
     created: new Date().toISOString(),
     branding: 'Shai • Demo',
     duration: '0',
