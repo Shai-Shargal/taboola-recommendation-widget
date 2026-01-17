@@ -12,8 +12,11 @@ export function loadStyles(): void {
   const link = document.createElement('link');
   link.id = styleId;
   link.rel = 'stylesheet';
-  // Use relative path to work on GitHub Pages (served from subdirectory) and local development
-  link.href = './dist/styles/widget.css';
+  // Resolve CSS path relative to current page directory to work on GitHub Pages (subdirectory) and local dev
+  // Get the directory part of the current URL (with trailing slash) and append the relative path
+  const currentPath = window.location.pathname;
+  const baseDir = currentPath.endsWith('/') ? currentPath : currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+  link.href = window.location.origin + baseDir + 'dist/styles/widget.css';
 
   document.head.appendChild(link);
   stylesLoaded = true;
