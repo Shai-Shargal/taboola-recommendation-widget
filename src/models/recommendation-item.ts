@@ -1,112 +1,12 @@
-import { RecommendationItem, Thumbnail } from '../types/recommendation';
+/**
+ * Re-export the base class for backward compatibility
+ * The implementation has been split into separate utility modules
+ */
+export { RecommendationItemBase } from './recommendation-item/base';
 
 /**
- * Abstract base class for recommendation items
- * Implements Strategy pattern for extensibility
+ * Re-export utilities for external use if needed
  */
-export abstract class RecommendationItemBase {
-  protected data: RecommendationItem;
-
-  constructor(data: RecommendationItem) {
-    this.data = data;
-  }
-
-  /**
-   * Gets the thumbnail URL (uses first thumbnail from array)
-   */
-  protected getThumbnailUrl(): string {
-    if (this.data.thumbnail && this.data.thumbnail.length > 0) {
-      return this.data.thumbnail[0].url;
-    }
-    return '';
-  }
-
-  /**
-   * Gets the thumbnail alt text
-   */
-  protected getThumbnailAlt(): string {
-    return this.data.name || 'Recommendation thumbnail';
-  }
-
-  /**
-   * Extracts the redirect URL from a notify-click URL
-   * The Taboola API returns notify-click URLs with a 'redir' parameter
-   * @param notifyClickUrl The notify-click URL from the API
-   * @returns The actual destination URL, or the original URL if parsing fails
-   */
-  protected extractRedirectUrl(notifyClickUrl: string): string {
-    try {
-      const url = new URL(notifyClickUrl);
-      const redirParam = url.searchParams.get('redir');
-      if (redirParam) {
-        return decodeURIComponent(redirParam);
-      }
-    } catch (error) {
-      console.warn('Failed to parse notify-click URL:', error);
-    }
-    return notifyClickUrl;
-  }
-
-  protected trackClick(notifyClickUrl: string): void {
-    try {
-      const img = new Image();
-      img.style.display = 'none';
-      img.src = notifyClickUrl;
-      document.body.appendChild(img);
-      setTimeout(() => {
-        if (img.parentNode) {
-          img.parentNode.removeChild(img);
-        }
-      }, 1000);
-    } catch (error) {
-      console.warn('Failed to track click:', error);
-    }
-  }
-
-  /**
-   * Handles click event on the recommendation item
-   * Implements proper click tracking via notify-click URL
-   */
-  protected handleClick(event: MouseEvent): void {
-    event.preventDefault();
-    const notifyClickUrl = this.data.url;
-    
-    if (!notifyClickUrl) {
-      return;
-    }
-
-    const redirectUrl = this.extractRedirectUrl(notifyClickUrl);
-    this.trackClick(notifyClickUrl);
-    const target = this.getLinkTarget();
-    if (target === '_blank') {
-      window.open(redirectUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      window.location.href = redirectUrl;
-    }
-  }
-
-  /**
-   * Gets the link target (to be overridden by subclasses)
-   */
-  protected abstract getLinkTarget(): '_self' | '_blank';
-
-  /**
-   * Renders the recommendation item as a DOM element
-   * @returns HTMLElement representing the recommendation
-   */
-  abstract render(): HTMLElement;
-
-  /**
-   * Gets the item data
-   */
-  getData(): RecommendationItem {
-    return this.data;
-  }
-
-  /**
-   * Gets the origin type
-   */
-  getOrigin(): string {
-    return this.data.origin;
-  }
-}
+export { extractRedirectUrl } from './recommendation-item/url-parser';
+export { trackClick } from './recommendation-item/click-tracker';
+export { getThumbnailUrl, getThumbnailAlt } from './recommendation-item/thumbnail-utils';

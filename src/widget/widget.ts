@@ -1,7 +1,7 @@
 import { TaboolaApiClient } from '../api/client';
 import { TaboolaApiError } from '../api/errors';
 import { ApiConfig, RecommendationItem } from '../types/recommendation';
-import { RecommendationItemBase } from '../models/recommendation-item';
+import { RecommendationItemBase } from '../models/recommendation-item/base';
 import { OrganicItem } from '../models/organic-item';
 import { SponsoredItem } from '../models/sponsored-item';
 import { WidgetRenderer } from './renderer';

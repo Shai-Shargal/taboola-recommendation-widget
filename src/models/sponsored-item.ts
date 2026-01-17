@@ -1,5 +1,5 @@
 import { RecommendationItem } from '../types/recommendation';
-import { RecommendationItemBase } from './recommendation-item';
+import { RecommendationItemBase } from './recommendation-item/base';
 
 /**
  * Sponsored recommendation item

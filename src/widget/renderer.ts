@@ -1,4 +1,4 @@
-import { RecommendationItemBase } from '../models/recommendation-item';
+import { RecommendationItemBase } from '../models/recommendation-item/base';
 import { SponsoredItem } from '../models/sponsored-item';
 import { createDemoRecommendation } from '../demo/createDemoRecommendation';
 import { applyDemoBadge } from '../demo/applyDemoBadge';
