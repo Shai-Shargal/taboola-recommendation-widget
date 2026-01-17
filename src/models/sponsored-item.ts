@@ -1,10 +1,6 @@
 import { RecommendationItem } from '../types/recommendation';
 import { RecommendationItemBase } from './recommendation-item/base';
 
-/**
- * Sponsored recommendation item
- * Opens links in a new tab and displays branding
- */
 export class SponsoredItem extends RecommendationItemBase {
   constructor(data: RecommendationItem) {
     super(data);

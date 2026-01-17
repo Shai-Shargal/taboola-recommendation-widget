@@ -1,10 +1,6 @@
 import { RecommendationItem } from '../types/recommendation';
 import { RecommendationItemBase } from './recommendation-item/base';
 
-/**
- * Organic recommendation item
- * Opens links in a new tab
- */
 export class OrganicItem extends RecommendationItemBase {
   constructor(data: RecommendationItem) {
     super(data);

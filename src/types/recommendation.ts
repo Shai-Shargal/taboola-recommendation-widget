@@ -1,20 +1,11 @@
-/**
- * Thumbnail image object from Taboola API
- */
 export interface Thumbnail {
   url: string;
   width?: string;
   height?: string;
 }
 
-/**
- * Origin type for recommendations
- */
 export type Origin = 'sponsored' | 'organic';
 
-/**
- * Recommendation item from Taboola API
- */
 export interface RecommendationItem {
   type: string;
   thumbnail: Thumbnail[];
@@ -30,17 +21,11 @@ export interface RecommendationItem {
   url: string;
 }
 
-/**
- * Taboola API response structure
- */
 export interface TaboolaResponse {
   id: string;
   list: RecommendationItem[];
 }
 
-/**
- * Configuration for API requests
- */
 export interface ApiConfig {
   publisherId: string;
   appType: string;
