@@ -110,8 +110,6 @@ await TaboolaWidget.init({
 
 🌐 **[View Live Demo](https://shai-shargal.github.io/taboola-recommendation-widget/)** (GitHub Pages)
 
-> **Note:** The Taboola API requires a USA VPN connection. If the demo doesn't load, ensure you're connected to a USA VPN.
-
 ### Local Development
 
 1. Build the project:
@@ -131,9 +129,7 @@ python -m http.server 8000
 npx http-server -p 8000
 ```
 
-3. **Important:** Connect to a USA VPN (the Taboola API requires this)
-
-4. Open `http://localhost:8000/examples/demo.html` in your browser
+3. Open `http://localhost:8000/examples/demo.html` in your browser
 
 ## Design & Styling
 

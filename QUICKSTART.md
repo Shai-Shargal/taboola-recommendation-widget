@@ -6,7 +6,6 @@ Get the Taboola Recommendation Widget up and running in 5 minutes!
 
 - Node.js (v14 or higher)
 - npm (comes with Node.js)
-- USA VPN connection (required for Taboola API)
 
 ## Step 1: Install Dependencies
 
@@ -32,11 +31,7 @@ python -m http.server 8000
 npx http-server -p 8000
 ```
 
-## Step 4: Connect to USA VPN
-
-**Important:** The Taboola API requires a USA VPN connection. Connect before proceeding.
-
-## Step 5: Open Demo Page
+## Step 4: Open Demo Page
 
 Navigate to: `http://localhost:8000/examples/demo.html`
 
@@ -80,8 +75,8 @@ All 39 tests should pass.
 - ✅ Check browser console for errors
 
 ### API errors
-- ✅ **Most common:** Connect to USA VPN
 - ✅ Check Network tab in DevTools
+- ✅ Verify API endpoint is accessible
 
 ### Module import errors
 - ✅ Rebuild: `npm run build`
