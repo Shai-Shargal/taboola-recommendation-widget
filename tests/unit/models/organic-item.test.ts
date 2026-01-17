@@ -1,5 +1,5 @@
-import { OrganicItem } from '../../src/models/organic-item';
-import { RecommendationItem } from '../../src/types/recommendation';
+import { OrganicItem } from '../../../src/models/organic-item';
+import { RecommendationItem } from '../../../src/types/recommendation';
 
 describe('OrganicItem', () => {
   const mockItemData: RecommendationItem = {

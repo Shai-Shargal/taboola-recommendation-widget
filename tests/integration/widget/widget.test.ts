@@ -1,8 +1,8 @@
-import { TaboolaWidget, WidgetConfig } from '../../src/widget/widget';
-import { TaboolaApiClient } from '../../src/api/client';
-import { TaboolaResponse } from '../../src/types/recommendation';
+import { TaboolaWidget, WidgetConfig } from '../../../src/widget/widget';
+import { TaboolaApiClient } from '../../../src/api/client';
+import { TaboolaResponse } from '../../../src/types/recommendation';
 
-jest.mock('../../src/api/client');
+jest.mock('../../../src/api/client');
 
 describe('TaboolaWidget', () => {
   let container: HTMLElement;
@@ -174,6 +174,7 @@ describe('TaboolaWidget', () => {
 
       const items = container.querySelectorAll('.taboola-recommendation-item');
       expect(items.length).toBe(0);
+      expect(container.querySelector('.taboola-widget-empty')).not.toBeNull();
     });
   });
 

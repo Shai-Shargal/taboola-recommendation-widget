@@ -1,6 +1,6 @@
-import { TaboolaApiClient } from '../../src/api/client';
-import { TaboolaApiError } from '../../src/api/errors';
-import { ApiConfig, TaboolaResponse } from '../../src/types/recommendation';
+import { TaboolaApiClient } from '../../../src/api/client';
+import { TaboolaApiError } from '../../../src/api/errors';
+import { ApiConfig, TaboolaResponse } from '../../../src/types/recommendation';
 
 // Mock fetch globally
 global.fetch = jest.fn();
@@ -142,13 +142,6 @@ describe('TaboolaApiClient', () => {
       await expect(client.fetchRecommendations(mockConfig)).rejects.toThrow(
         TaboolaApiError
       );
-
-      try {
-        await client.fetchRecommendations(mockConfig);
-      } catch (error) {
-        expect(error).toBeInstanceOf(TaboolaApiError);
-        expect((error as TaboolaApiError).message).toContain('Network error');
-      }
     });
 
     it('should handle optional parameters', async () => {

@@ -1,5 +1,5 @@
-import { SponsoredItem } from '../../src/models/sponsored-item';
-import { RecommendationItem } from '../../src/types/recommendation';
+import { SponsoredItem } from '../../../src/models/sponsored-item';
+import { RecommendationItem } from '../../../src/types/recommendation';
 
 describe('SponsoredItem', () => {
   const mockItemData: RecommendationItem = {
