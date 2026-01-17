@@ -8,7 +8,11 @@
     "build": "tsc && node scripts/fix-imports.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "serve": "npx http-server -p 8000 -c-1 -o",
+    "serve:kill": "powershell -Command \"Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; npx http-server -p 8000 -c-1 -o\"",
+    "start": "npm run build && npm run serve",
+    "demo": "npm run build && npm run serve"
   },
   "keywords": [
     "taboola",
