@@ -1,5 +1,7 @@
 # Taboola Recommendation Widget
 
+[![CI](https://github.com/Shai-Shargal/taboola-recommendation-widget/actions/workflows/ci.yml/badge.svg)](https://github.com/Shai-Shargal/taboola-recommendation-widget/actions/workflows/ci.yml)
+
 A fully functional, responsive Taboola recommendation widget built with TypeScript. This widget displays recommendations from the Taboola API, supporting both organic and sponsored content types with a modern, polished UI.
 
 ## Features
@@ -46,6 +48,29 @@ cd taboola-recommendation-widget
 npm install
 ```
 
+## Quick Start
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Build the project:**
+   ```bash
+   npm run build
+   ```
+
+3. **Run locally:**
+   ```bash
+   npm run serve
+   # Then open http://localhost:8000/examples/demo.html
+   ```
+
+4. **Run tests:**
+   ```bash
+   npm test
+   ```
+
 ## Building
 
 Compile TypeScript to JavaScript and copy CSS files:
@@ -81,6 +106,14 @@ await TaboolaWidget.init({
 
 ## Demo
 
+### Live Demo
+
+🌐 **[View Live Demo](https://shai-shargal.github.io/taboola-recommendation-widget/)** (GitHub Pages)
+
+> **Note:** The Taboola API requires a USA VPN connection. If the demo doesn't load, ensure you're connected to a USA VPN.
+
+### Local Development
+
 1. Build the project:
 ```bash
 npm run build
@@ -88,10 +121,13 @@ npm run build
 
 2. Start a local server (the API requires CORS, so you'll need a server):
 ```bash
-# Using Python
+# Using npm serve script
+npm run serve
+
+# Or using Python
 python -m http.server 8000
 
-# Using Node.js (http-server)
+# Or using Node.js (http-server)
 npx http-server -p 8000
 ```
 
