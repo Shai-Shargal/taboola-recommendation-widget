@@ -1,0 +1,73 @@
+/* Loading skeleton styles */
+.taboola-widget-loading {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+.taboola-widget-loading__skeleton {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 100%;
+}
+
+.taboola-widget-loading__skeleton-thumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.taboola-widget-loading__skeleton-content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.taboola-widget-loading__skeleton-line {
+  height: 12px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 2px;
+}
+
+.taboola-widget-loading__skeleton-line--short {
+  width: 60%;
+}
+
+.taboola-widget-loading__skeleton-line--title {
+  height: 14px;
+  margin-bottom: 4px;
+}
+
+.taboola-widget-loading__skeleton-line--title:last-of-type {
+  width: 80%;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .taboola-widget-loading {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .taboola-widget-loading {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

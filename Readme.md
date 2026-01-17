@@ -252,8 +252,18 @@ The widget supports modern browsers with ES2020 support:
 
 ### Making CSS Changes
 
-1. Edit `src/styles/widget.css`
-2. Run `npm run build` to copy CSS to `dist/styles/widget.css`
+The CSS is organized into logical modules in `src/styles/`:
+- `base.css` - Widget container, header, and grid layout
+- `loading.css` - Skeleton loading states and animations
+- `states.css` - Error and empty states
+- `item.css` - Recommendation item base styles
+- `thumbnail.css` - Thumbnail and placeholder styles
+- `content.css` - Item content (title, description, badge, etc.)
+- `responsive.css` - Media queries for responsive design
+- `widget.css` - Main file that imports all modules
+
+1. Edit the appropriate CSS module in `src/styles/`
+2. Run `npm run build` to concatenate and copy CSS to `dist/styles/widget.css`
 3. Refresh your browser (hard refresh: `Ctrl+Shift+R` or `Cmd+Shift+R`)
 
 ### Watch Mode

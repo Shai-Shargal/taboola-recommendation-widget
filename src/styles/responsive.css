@@ -1,0 +1,30 @@
+/* Responsive media queries */
+@media (max-width: 767px) {
+  .taboola-recommendation-item__description {
+    display: none;
+  }
+
+  .taboola-widget__header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .taboola-widget__demo-toggle-label {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 768px) {
+  .taboola-widget__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .taboola-widget__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}

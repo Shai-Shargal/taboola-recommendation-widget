@@ -1,0 +1,22 @@
+/* Error and empty states */
+.taboola-widget-error {
+  padding: 20px;
+  text-align: center;
+  color: #e74c3c;
+}
+
+.taboola-widget-error__message {
+  margin: 0;
+}
+
+.taboola-widget-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: #666666;
+}
+
+.taboola-widget-empty__message {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}

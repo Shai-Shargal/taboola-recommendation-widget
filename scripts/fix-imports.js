@@ -38,7 +38,30 @@ function fixImports(dir) {
   }
 }
 
-function copyStyles() {
+function resolveImports(cssContent, baseDir) {
+  const importRegex = /@import\s+['"]([^'"]+)['"];?/g;
+  let resolvedContent = cssContent;
+  let match;
+
+  while ((match = importRegex.exec(cssContent)) !== null) {
+    const importPath = match[1];
+    const fullPath = path.resolve(baseDir, importPath);
+    
+    if (fs.existsSync(fullPath)) {
+      let importedContent = fs.readFileSync(fullPath, 'utf8');
+      // Recursively resolve imports in the imported file
+      importedContent = resolveImports(importedContent, path.dirname(fullPath));
+      // Replace the @import with the actual content
+      resolvedContent = resolvedContent.replace(match[0], importedContent);
+    } else {
+      console.warn(`Warning: CSS import not found: ${fullPath}`);
+    }
+  }
+
+  return resolvedContent;
+}
+
+function buildStyles() {
   const srcStyles = path.join(__dirname, '..', 'src', 'styles', 'widget.css');
   const distStylesDir = path.join(__dirname, '..', 'dist', 'styles');
   const distStyles = path.join(distStylesDir, 'widget.css');
@@ -48,14 +71,23 @@ function copyStyles() {
   }
   
   if (fs.existsSync(srcStyles)) {
-    fs.copyFileSync(srcStyles, distStyles);
-    console.log('Copied styles to dist/styles/widget.css');
+    let cssContent = fs.readFileSync(srcStyles, 'utf8');
+    const stylesDir = path.dirname(srcStyles);
+    
+    // Resolve all @import statements
+    cssContent = resolveImports(cssContent, stylesDir);
+    
+    // Write the concatenated CSS
+    fs.writeFileSync(distStyles, cssContent);
+    console.log('Built and concatenated styles to dist/styles/widget.css');
+  } else {
+    console.warn(`Warning: Main stylesheet not found: ${srcStyles}`);
   }
 }
 
 const distDir = path.join(__dirname, '..', 'dist');
 console.log('Fixing imports in dist folder...');
 fixImports(distDir);
-console.log('Copying styles...');
-copyStyles();
+console.log('Building styles...');
+buildStyles();
 console.log('Done!');
