@@ -1,6 +1,7 @@
 import { ApiConfig } from '../types/recommendation';
 
-const BASE_URL = 'http://api.taboola.com/1.0/json';
+// Use HTTPS for API requests to avoid mixed-content blocking on GitHub Pages (served over HTTPS)
+const BASE_URL = 'https://api.taboola.com/1.0/json';
 
 export function buildTaboolaUrl(config: ApiConfig): string {
   const params = new URLSearchParams({
