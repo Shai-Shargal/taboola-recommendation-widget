@@ -65,11 +65,11 @@ export class SponsoredItem extends RecommendationItemBase {
     content.appendChild(title);
 
     if (this.data.branding) {
-      const source = document.createElement('div');
-      source.className = 'taboola-recommendation-item__source';
-      source.textContent = this.data.branding;
-      source.setAttribute('aria-label', `Source: ${this.data.branding}`);
-      content.appendChild(source);
+      const branding = document.createElement('div');
+      branding.className = 'taboola-recommendation-item__branding';
+      branding.textContent = this.data.branding;
+      branding.setAttribute('aria-label', this.data.branding);
+      content.appendChild(branding);
     }
 
     if (this.data.description) {

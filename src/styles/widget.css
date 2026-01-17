@@ -260,7 +260,8 @@
   word-break: break-word;
 }
 
-.taboola-recommendation-item__source {
+.taboola-recommendation-item__source,
+.taboola-recommendation-item__branding {
   font-size: 11px;
   color: #999999;
   margin-top: 4px;
