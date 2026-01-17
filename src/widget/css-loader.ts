@@ -12,7 +12,8 @@ export function loadStyles(): void {
   const link = document.createElement('link');
   link.id = styleId;
   link.rel = 'stylesheet';
-  link.href = '/dist/styles/widget.css';
+  // Use relative path to work on GitHub Pages (served from subdirectory) and local development
+  link.href = './dist/styles/widget.css';
 
   document.head.appendChild(link);
   stylesLoaded = true;
