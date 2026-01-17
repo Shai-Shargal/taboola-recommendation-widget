@@ -14,6 +14,19 @@ export class OrganicItem extends RecommendationItemBase {
     return '_blank';
   }
 
+  private createPlaceholder(): HTMLElement {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'taboola-recommendation-item__thumbnail-placeholder';
+    placeholder.setAttribute('aria-hidden', 'true');
+    
+    const text = document.createElement('span');
+    text.className = 'taboola-recommendation-item__thumbnail-placeholder-text';
+    text.textContent = 'Image unavailable';
+    placeholder.appendChild(text);
+    
+    return placeholder;
+  }
+
   render(): HTMLElement {
     const article = document.createElement('article');
     article.className = 'taboola-recommendation-item taboola-recommendation-item--organic';
@@ -33,18 +46,14 @@ export class OrganicItem extends RecommendationItemBase {
       img.onerror = () => {
         img.style.display = 'none';
         if (!imgWrapper.querySelector('.taboola-recommendation-item__thumbnail-placeholder')) {
-          const placeholder = document.createElement('div');
-          placeholder.className = 'taboola-recommendation-item__thumbnail-placeholder';
-          placeholder.setAttribute('aria-hidden', 'true');
+          const placeholder = this.createPlaceholder();
           imgWrapper.appendChild(placeholder);
         }
       };
       
       imgWrapper.appendChild(img);
     } else {
-      const placeholder = document.createElement('div');
-      placeholder.className = 'taboola-recommendation-item__thumbnail-placeholder';
-      placeholder.setAttribute('aria-hidden', 'true');
+      const placeholder = this.createPlaceholder();
       imgWrapper.appendChild(placeholder);
     }
     
