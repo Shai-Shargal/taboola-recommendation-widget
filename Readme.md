@@ -306,5 +306,6 @@ This will watch for TypeScript changes and recompile automatically.
 MIT
 
 ## Author
+test
 
 Built as part of the Taboola Frontend Engineering Home Assignment.
