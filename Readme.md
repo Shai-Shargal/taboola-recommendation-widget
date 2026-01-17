@@ -80,29 +80,6 @@ npm run build
 
 The compiled files will be in the `dist/` directory. **Important:** After making CSS changes, you must run `npm run build` to copy the updated styles to the `dist/` folder.
 
-## Basic Usage
-
-1. Include the compiled JavaScript file in your HTML:
-```html
-<script type="module" src="dist/index.js"></script>
-```
-
-2. Create a container element:
-```html
-<div id="my-widget"></div>
-```
-
-3. Initialize the widget:
-```javascript
-// Using global API
-await TaboolaWidget.init({
-  containerId: 'my-widget',
-  count: 4,
-  sourceType: 'video',
-  sourceId: '214321562187',
-  sourceUrl: 'http://www.site.com/videos/214321562187.html'
-});
-```
 
 ## Demo
 
@@ -270,15 +247,6 @@ The widget supports modern browsers with ES2020 support:
 - **Event Delegation**: Efficient event handling
 - **Minimal DOM Manipulation**: Optimized rendering
 - **CSS Containment**: Layout isolation for better performance
-
-## Accessibility
-
-- Semantic HTML (`<article>`, proper heading hierarchy)
-- ARIA labels and roles
-- Keyboard navigation support (Enter and Space keys)
-- Focus management
-- Alt text for images
-- Proper color contrast ratios
 
 ## Development
 
