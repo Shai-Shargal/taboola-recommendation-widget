@@ -9,7 +9,7 @@ A fully functional, responsive Taboola recommendation widget built with TypeScri
 - ✅ **TypeScript Implementation** - Pure TypeScript, no frameworks
 - ✅ **Responsive Grid Layout** - Modern CSS Grid with 3/2/1 column layouts (desktop/tablet/mobile)
 - ✅ **Polished UI/UX** - Clean card design with consistent heights, proper image aspect ratios, and refined typography
-- ✅ **Dual Content Types** - Supports both organic and sponsored recommendations (both open in new tab)
+- ✅ **Dual Content Types** - Supports both organic and sponsored recommendations (organic opens in same tab, sponsored opens in new tab)
 - ✅ **Demo Mode** - Toggle to show demo recommendation card for testing
 - ✅ **Extensible Architecture** - Easy to add new recommendation types in the future
 - ✅ **Unit Test Coverage** - Comprehensive test suite using Jest
@@ -146,7 +146,7 @@ The widget features a modern, production-ready design:
 ### Content Types
 
 #### Organic Items
-- Open in a new tab
+- Open in the same tab
 - Display branding if available
 - Used for internal site recommendations
 

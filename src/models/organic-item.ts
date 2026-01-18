@@ -7,7 +7,7 @@ export class OrganicItem extends RecommendationItemBase {
   }
 
   protected getLinkTarget(): '_self' | '_blank' {
-    return '_blank';
+    return '_self';
   }
 
   private createPlaceholder(): HTMLElement {
@@ -82,7 +82,7 @@ export class OrganicItem extends RecommendationItemBase {
     article.addEventListener('click', (e) => this.handleClick(e));
     article.setAttribute('role', 'link');
     article.setAttribute('tabindex', '0');
-    article.setAttribute('aria-label', `${this.data.name || 'Recommendation'}. Click to open in new tab.`);
+    article.setAttribute('aria-label', `${this.data.name || 'Recommendation'}. Click to open.`);
 
     article.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
